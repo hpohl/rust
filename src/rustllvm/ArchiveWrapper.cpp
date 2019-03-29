@@ -26,7 +26,12 @@ struct RustArchiveIterator {
   Archive::child_iterator End;
   Error Err;
 
-  RustArchiveIterator() : First(true), Err(Error::success()) {}
+  RustArchiveIterator(Archive::child_iterator cur, Archive::child_iterator end) :
+    First(true),
+    Cur(cur),
+    End(end),
+    Err(Error::success()) {
+    }
 };
 
 enum class LLVMRustArchiveKind {
@@ -84,14 +89,17 @@ extern "C" void LLVMRustDestroyArchive(LLVMRustArchiveRef RustArchive) {
 extern "C" LLVMRustArchiveIteratorRef
 LLVMRustArchiveIteratorNew(LLVMRustArchiveRef RustArchive) {
   Archive *Archive = RustArchive->getBinary();
-  RustArchiveIterator *RAI = new RustArchiveIterator();
-  RAI->Cur = Archive->child_begin(RAI->Err);
+  llvm::Error err { Error::success() };
+  RustArchiveIterator *RAI = new RustArchiveIterator(
+      Archive->child_begin(err),
+      Archive->child_end()
+      );
+  RAI->Err = std::move(err);
   if (RAI->Err) {
     LLVMRustSetLastError(toString(std::move(RAI->Err)).c_str());
     delete RAI;
     return nullptr;
   }
-  RAI->End = Archive->child_end();
   return RAI;
 }
 

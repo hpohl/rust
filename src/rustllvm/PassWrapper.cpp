@@ -275,38 +275,38 @@ static size_t getLongestEntryLength(ArrayRef<SubtargetFeatureKV> Table) {
 }
 
 extern "C" void LLVMRustPrintTargetCPUs(LLVMTargetMachineRef TM) {
-  const TargetMachine *Target = unwrap(TM);
-  const MCSubtargetInfo *MCInfo = Target->getMCSubtargetInfo();
-  const Triple::ArchType HostArch = Triple(sys::getProcessTriple()).getArch();
-  const Triple::ArchType TargetArch = Target->getTargetTriple().getArch();
-  const ArrayRef<SubtargetFeatureKV> CPUTable = MCInfo->getCPUTable();
-  unsigned MaxCPULen = getLongestEntryLength(CPUTable);
+  //const TargetMachine *Target = unwrap(TM);
+  //const MCSubtargetInfo *MCInfo = Target->getMCSubtargetInfo();
+  //const Triple::ArchType HostArch = Triple(sys::getProcessTriple()).getArch();
+  //const Triple::ArchType TargetArch = Target->getTargetTriple().getArch();
+  //const ArrayRef<SubtargetFeatureKV> CPUTable = MCInfo->getCPUTable();
+  //unsigned MaxCPULen = getLongestEntryLength(CPUTable);
 
-  printf("Available CPUs for this target:\n");
-  if (HostArch == TargetArch) {
-    const StringRef HostCPU = sys::getHostCPUName();
-    printf("    %-*s - Select the CPU of the current host (currently %.*s).\n",
-      MaxCPULen, "native", (int)HostCPU.size(), HostCPU.data());
-  }
-  for (auto &CPU : CPUTable)
-    printf("    %-*s - %s.\n", MaxCPULen, CPU.Key, CPU.Desc);
-  printf("\n");
+  //printf("Available CPUs for this target:\n");
+  //if (HostArch == TargetArch) {
+  //  const StringRef HostCPU = sys::getHostCPUName();
+  //  printf("    %-*s - Select the CPU of the current host (currently %.*s).\n",
+  //    MaxCPULen, "native", (int)HostCPU.size(), HostCPU.data());
+  //}
+  //for (auto &CPU : CPUTable)
+  //  printf("    %-*s - %s.\n", MaxCPULen, CPU.Key, CPU.Desc);
+  //printf("\n");
 }
 
 extern "C" void LLVMRustPrintTargetFeatures(LLVMTargetMachineRef TM) {
-  const TargetMachine *Target = unwrap(TM);
-  const MCSubtargetInfo *MCInfo = Target->getMCSubtargetInfo();
-  const ArrayRef<SubtargetFeatureKV> FeatTable = MCInfo->getFeatureTable();
-  unsigned MaxFeatLen = getLongestEntryLength(FeatTable);
+  //const TargetMachine *Target = unwrap(TM);
+  //const MCSubtargetInfo *MCInfo = Target->getMCSubtargetInfo();
+  //const ArrayRef<SubtargetFeatureKV> FeatTable = MCInfo->getFeatureTable();
+  //unsigned MaxFeatLen = getLongestEntryLength(FeatTable);
 
-  printf("Available features for this target:\n");
-  for (auto &Feature : FeatTable)
-    printf("    %-*s - %s.\n", MaxFeatLen, Feature.Key, Feature.Desc);
-  printf("\n");
+  //printf("Available features for this target:\n");
+  //for (auto &Feature : FeatTable)
+  //  printf("    %-*s - %s.\n", MaxFeatLen, Feature.Key, Feature.Desc);
+  //printf("\n");
 
-  printf("Use +feature to enable a feature, or -feature to disable it.\n"
-         "For example, rustc -C -target-cpu=mycpu -C "
-         "target-feature=+feature1,-feature2\n\n");
+  //printf("Use +feature to enable a feature, or -feature to disable it.\n"
+  //       "For example, rustc -C -target-cpu=mycpu -C "
+  //       "target-feature=+feature1,-feature2\n\n");
 }
 
 #else
